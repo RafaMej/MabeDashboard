@@ -1,4 +1,4 @@
-import SwiftUI
+internal import SwiftUI
 import SwiftData
 
 struct AppRootView: View {
