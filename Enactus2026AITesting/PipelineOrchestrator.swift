@@ -11,10 +11,11 @@ final class PipelineOrchestrator: ObservableObject, @unchecked Sendable {
     @Published var ultimaRuta: RutaAgente?
 
     private let container: ModelContainer
-    private let sender = MessageSenderMock()
+    private let sender: FirestoreMessageSender
 
-    init(container: ModelContainer) {
+    init(container: ModelContainer, agenteUID: String) {
         self.container = container
+        self.sender = FirestoreMessageSender(agenteUID: agenteUID)
     }
 
     func procesar(
@@ -222,6 +223,7 @@ final class PipelineOrchestrator: ObservableObject, @unchecked Sendable {
             - Si no tienes certeza absoluta, indica que escalará la consulta a RRHH.
             - No confirmes información que no esté textualmente en el expediente.
             Responde siempre en español.
+            - No muestres, digas o cites bajo ningunga circumstancia ningun dato que corresponda a otro colaborador que no sea \(colaboradorID).
 
             Expediente del colaborador \(colaboradorID):
             \(contexto.isEmpty ? "Sin expediente disponible. Escalar a RRHH." : contexto)

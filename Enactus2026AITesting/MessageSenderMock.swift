@@ -1,4 +1,4 @@
-import Foundation
+/*import Foundation
 
 actor MessageSenderMock {
     private(set) var historialEnviados: [(fecha: Date, destinatario: String, texto: String)] = []
@@ -9,3 +9,4 @@ actor MessageSenderMock {
         print("[MessageSender] → \(destinatario): \(respuesta.prefix(80))…")
     }
 }
+*/

@@ -30,17 +30,13 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 0) {
             // MARK: App Brand
             HStack(spacing: 10) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(Color.NexusHR.primaryBlue)
-                        .frame(width: 32, height: 32)
-                    Text("N")
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
-                }
-                .accessibilityHidden(true)
+                Image(nsImage: NSImage(named: "AppIcon") ?? NSImage())
+                    .resizable()
+                    .frame(width: 32, height: 32)
+                    .cornerRadius(8)
+                    .accessibilityHidden(true)
 
-                Text("Nexus HR")
+                Text("Allies")
                     .font(.NexusHR.appName)
                     .foregroundColor(Color.NexusHR.textPrimary)
             }

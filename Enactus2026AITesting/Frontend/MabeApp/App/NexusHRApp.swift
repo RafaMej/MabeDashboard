@@ -4,6 +4,8 @@
 
 internal import SwiftUI
 import SwiftData
+import FirebaseCore
+import FirebaseAuth
 
 @main
 struct MabeApp: App {
@@ -17,6 +19,10 @@ struct MabeApp: App {
         let config = ModelConfiguration("csc-nexushr", schema: schema)
         return try! ModelContainer(for: schema, configurations: config)
     }()
+
+    init() {
+        FirebaseApp.configure()
+    }
 
     @StateObject private var dashboardVM = DashboardViewModel(service: LiveDashboardService(container: Self.container))
 
@@ -37,11 +43,23 @@ struct MabeApp: App {
 
     @MainActor
     private func arrancarApp() async {
-        // Seed test collaborators on first launch
+        // 1. Autenticar agente anónimamente si no hay sesión activa
+        if Auth.auth().currentUser == nil {
+            do {
+                let result = try await Auth.auth().signInAnonymously()
+                print("[NexusHR] Agente autenticado — UID: \(result.user.uid)")
+            } catch {
+                print("[NexusHR] Error auth: \(error)")
+            }
+        } else {
+            print("[NexusHR] Sesión existente — UID: \(Auth.auth().currentUser!.uid)")
+        }
+
+        // 2. Seed test collaborators on first launch
         let context = Self.container.mainContext
         try? ColaboradorSeeder.sembrarSiNecesario(context: context)
 
-        // Index PDFs in background — only runs once per document
+        // 3. Index PDFs in background — only runs once per document
         Task.detached(priority: .background) {
             do {
                 let service = DocumentoIndexerService(modelContainer: Self.container)
