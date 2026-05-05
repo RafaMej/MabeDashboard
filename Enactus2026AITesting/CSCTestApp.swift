@@ -1,7 +1,8 @@
-import SwiftUI
+internal import SwiftUI
 import SwiftData
 
-@main
+// Test app - disabled @main (use NexusHRApp as main entry)
+// @main
 struct CSCTestApp: App {
 
     let container: ModelContainer = {
